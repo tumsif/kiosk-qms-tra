@@ -40,12 +40,12 @@ class _ServiceButtonState extends State<ServiceButton> {
 
  @override
 Widget build(BuildContext context) {
-  bool _hovered = false; // hover state
+  bool hovered = false; // hover state
 
   return MouseRegion(
     cursor: SystemMouseCursors.click, // pointer cursor
-    onEnter: (_) => setState(() => _hovered = true),
-    onExit: (_) => setState(() => _hovered = false),
+    onEnter: (_) => setState(() => hovered = true),
+    onExit: (_) => setState(() => hovered = false),
     child: GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
@@ -54,7 +54,7 @@ Widget build(BuildContext context) {
       child: AnimatedScale(
         scale: _pressed
             ? 0.97
-            : _hovered
+            : hovered
                 ? 1.03
                 : 1.0, // shrink on press, grow on hover
         duration: const Duration(milliseconds: 120),
