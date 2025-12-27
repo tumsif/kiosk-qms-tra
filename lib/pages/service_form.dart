@@ -5,7 +5,7 @@ import 'package:kiosk_qms/services/queue_api.dart';
 
 class ServiceFormPage extends StatefulWidget {
   final Service service;
-  final Block? block;
+  final Block block;
 
   const ServiceFormPage({
     super.key,
@@ -22,6 +22,7 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
 
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _tinNumberController = TextEditingController();
 
   String _language = 'EN';
 
@@ -67,30 +68,45 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
 
                   // LOGO + TITLE
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Image(
-                          image: AssetImage('assets/images/tra_logo.jpg'),
-                          height: 48,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'TRA SELF SERVICE KIOSK',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF111827),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: LayoutBuilder(
+                        builder: (context, constraint) {
+                          if (constraint.maxWidth < 760) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Image(
+                                  image: AssetImage('assets/images/tra_logo.jpg'),
+                                  height: 48,
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Image(
+                                  image: AssetImage('assets/images/tra_logo.jpg'),
+                                  height: 48,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'TRA SELF SERVICE KIOSK',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF111827),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        })
                   ),
 
                   // LANGUAGE SWITCH
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: const Color(0xFFE5E7EB)),
@@ -124,7 +140,7 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.12),
+                        color: Colors.black.withValues(),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -156,7 +172,7 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
                             const SizedBox(width: 12),
                             _infoChip(
                               'Block',
-                              widget.block?.name ?? '-',
+                              widget.block.name,
                             ),
                           ],
                         ),
@@ -186,6 +202,20 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
                           keyboard: TextInputType.phone,
                           validator: (v) =>
                               v == null || v.isEmpty ? 'Required' : null,
+                        ),
+
+                        const SizedBox(height: 32),
+
+                        // TIN NUMBER
+                        _inputField(
+                          controller: _tinNumberController,
+                          label: _language == 'EN'
+                              ? 'TIN number'
+                              : 'Namba ya TIN',
+                          icon: Icons.badge,
+                          keyboard: TextInputType.number,
+                          validator: (v) =>
+                          v == null || v.isEmpty ? 'Required' : null,
                         ),
 
                         const SizedBox(height: 32),
@@ -329,8 +359,8 @@ class _ServiceFormPageState extends State<ServiceFormPage> {
       final ticket = await QueueApi.addToQueue(
         customerName: _nameController.text,
         phoneNumber: _phoneController.text,
-        tinNumber: '',
-        serviceBlockId: widget.block?.id ?? '-',
+        tinNumber: _tinNumberController.text,
+        serviceBlockId: widget.block.id,
       );
 
       Navigator.push(

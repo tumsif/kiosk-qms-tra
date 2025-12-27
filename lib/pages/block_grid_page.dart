@@ -18,96 +18,96 @@ class _BlockGridPageState extends State<BlockGridPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              height: 20,
+              width: 60,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF4D6),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xFFFFC107)),
+              ),
+              child: const Icon(
+                Icons.arrow_back,
+                size: 22,
+                color: Color(0xFF92400E),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          // ================= TOP BAR =================
+          // CENTERED LOGO + TITLE
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 760) {
+                  return Image(
+                    image: AssetImage('assets/images/tra_logo.jpg'),
+                    height: 58,
+                    width: 58,
+                  );
+                } else {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Image(
+                        image: AssetImage('assets/images/tra_logo.jpg'),
+                        height: 58,
+                        width: 58,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        'SELF SERVICE KIOSK',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF111827),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+
+          // LANGUAGE SELECTOR
+          Padding(padding: const EdgeInsets.all(8.0), child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 6,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _language,
+                items: const [
+                  DropdownMenuItem(value: 'ENG', child: Text('ENG')),
+                  DropdownMenuItem(value: 'SWA', child: Text('SWA')),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => _language = value);
+                  }
+                },
+              ),
+            ),
+          ),),
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            // ================= TOP BAR =================
-            Container(
-              height: 72,
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
-              ),
-              child: Row(
-                children: [
-                  // BACK BUTTON
-                  InkWell(
-                    borderRadius: BorderRadius.circular(14),
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      height: 44,
-                      width: 44,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF4D6),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xFFFFC107)),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 22,
-                        color: Color(0xFF92400E),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(width: 16),
-
-                  // CENTERED LOGO + TITLE
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Image(
-                          image: AssetImage('assets/images/tra_logo.jpg'),
-                          height: 58,
-                          width: 58,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'TRA SELF SERVICE KIOSK',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF111827),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // LANGUAGE SELECTOR
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _language,
-                        items: const [
-                          DropdownMenuItem(value: 'ENG', child: Text('ENG')),
-                          DropdownMenuItem(value: 'SWA', child: Text('SWA')),
-                        ],
-                        onChanged: (value) {
-                          if (value != null) {
-                            setState(() => _language = value);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
             const SizedBox(height: 24),
-
-            // ================= CONTEXT =================
             Text(
               widget.service.name,
               style: const TextStyle(
@@ -171,7 +171,7 @@ class _BlockGridPageState extends State<BlockGridPage> {
                             border: Border.all(color: const Color(0xFFFFE082)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.12),
+                                color: Colors.black.withValues(),
                                 blurRadius: 14,
                                 offset: const Offset(0, 8),
                               ),

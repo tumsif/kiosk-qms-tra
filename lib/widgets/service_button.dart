@@ -3,6 +3,10 @@ import 'package:kiosk_qms/pages/service_form.dart';
 import 'package:kiosk_qms/pages/block_grid_page.dart';
 import 'package:kiosk_qms/models/service.dart';
 
+import 'package:kiosk_qms/services/queue_api.dart';
+
+import '../pages/ticket_page.dart';
+
 class ServiceButton extends StatefulWidget {
   // final IconData icon;
   final Service service;
@@ -30,14 +34,41 @@ class _ServiceButtonState extends State<ServiceButton> {
         ),
       );
     } else if (widget.service.blocks.length == 1) {
+      if (widget.service.requireUserData) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ServiceFormPage(service: widget.service, block: widget.service.blocks[0],),
+          ),
+        );
+      } else {
+        _requestTicket(widget.service.blocks[0]);
+      }
+    } else {
+      throw Exception("This service has no block");
+    }
+  }
+
+  /// A special method to submit a request to get a ticket with no actual data
+  Future<void> _requestTicket(Block block) async {
+    try {
+      final ticket = await QueueApi.addToQueue(
+        customerName: null,
+        phoneNumber: null,
+        tinNumber: null,
+        serviceBlockId: block.id,
+      );
+
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => ServiceFormPage(service: widget.service, block: widget.service.blocks[0],),
+          builder: (_) => TicketPage(ticket: ticket),
         ),
       );
-    } else {
-      throw Exception("This service has no block");
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
 
@@ -66,7 +97,7 @@ class _ServiceButtonState extends State<ServiceButton> {
               border: Border.all(color: const Color(0xFFFFC107), width: 1.2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(_pressed ? 0.08 : 0.15),
+                  color: Colors.black.withValues(),
                   blurRadius: _pressed ? 6 : 14,
                   offset: Offset(0, _pressed ? 3 : 8),
                 ),
