@@ -36,12 +36,10 @@ class TicketPage extends StatelessWidget {
               // HEADER
               Column(
                 children: [
-                  Icon(
-                    Icons.confirmation_number_outlined,
-                    size: 48,
-                    color: Colors.yellow.shade700,
-                  ),
-                  const SizedBox(height: 8),
+                  Image(
+                    image:  AssetImage('assets/images/tra_logo.jpg'),
+                    height: 68, width: 120,),
+                  const SizedBox(height: 20),
                   const Text(
                     "QUEUE TICKET",
                     style: TextStyle(
