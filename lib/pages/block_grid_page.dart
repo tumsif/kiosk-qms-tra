@@ -171,7 +171,7 @@ class _BlockGridPageState extends State<BlockGridPage> {
                             border: Border.all(color: const Color(0xFFFFE082)),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(),
+                                color: Colors.black.withValues(alpha: 0.12),
                                 blurRadius: 14,
                                 offset: const Offset(0, 8),
                               ),

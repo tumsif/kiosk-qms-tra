@@ -84,7 +84,7 @@ class _TicketPageState extends State<TicketPage> {
             border: Border.all(color: Colors.yellow.shade600, width: 2),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(),
+                color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),

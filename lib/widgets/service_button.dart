@@ -97,7 +97,7 @@ class _ServiceButtonState extends State<ServiceButton> {
               border: Border.all(color: const Color(0xFFFFC107), width: 1.2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(),
+                  color: Colors.black.withValues(alpha: _pressed ? 0.08 : 0.15),
                   blurRadius: _pressed ? 6 : 14,
                   offset: Offset(0, _pressed ? 3 : 8),
                 ),
