@@ -10,7 +10,7 @@ class ServiceFormPage extends StatefulWidget {
   const ServiceFormPage({
     super.key,
     required this.service,
-    this.block,
+    required this.block,
   });
 
   @override

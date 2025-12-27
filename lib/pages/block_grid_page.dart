@@ -27,9 +27,7 @@ class _BlockGridPageState extends State<BlockGridPage> {
               padding: const EdgeInsets.symmetric(horizontal: 32),
               decoration: const BoxDecoration(
                 color: Colors.white,
-                border: Border(
-                  bottom: BorderSide(color: Color(0xFFE5E7EB)),
-                ),
+                border: Border(bottom: BorderSide(color: Color(0xFFE5E7EB))),
               ),
               child: Row(
                 children: [
@@ -43,9 +41,7 @@ class _BlockGridPageState extends State<BlockGridPage> {
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF4D6),
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: const Color(0xFFFFC107),
-                        ),
+                        border: Border.all(color: const Color(0xFFFFC107)),
                       ),
                       child: const Icon(
                         Icons.arrow_back,
@@ -83,7 +79,9 @@ class _BlockGridPageState extends State<BlockGridPage> {
                   // LANGUAGE SELECTOR
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: const Color(0xFFE5E7EB)),
@@ -92,10 +90,8 @@ class _BlockGridPageState extends State<BlockGridPage> {
                       child: DropdownButton<String>(
                         value: _language,
                         items: const [
-                          DropdownMenuItem(
-                              value: 'ENG', child: Text('ENG')),
-                          DropdownMenuItem(
-                              value: 'SWA', child: Text('SWA')),
+                          DropdownMenuItem(value: 'ENG', child: Text('ENG')),
+                          DropdownMenuItem(value: 'SWA', child: Text('SWA')),
                         ],
                         onChanged: (value) {
                           if (value != null) {
@@ -127,101 +123,103 @@ class _BlockGridPageState extends State<BlockGridPage> {
               _language == 'ENG'
                   ? 'Please choose a service block'
                   : 'Tafadhali chagua kituo cha huduma',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
+              style: const TextStyle(fontSize: 16, color: Colors.black54),
             ),
 
             const SizedBox(height: 32),
 
             // ================= BLOCK GRID =================
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 20,
-                ),
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 280,
-                  mainAxisSpacing: 32,
-                  crossAxisSpacing: 32,
-                  childAspectRatio: 1,
-                ),
-                itemCount: widget.service.blocks.length,
-                itemBuilder: (context, index) {
-                  final block = widget.service.blocks[index];
+              child: Builder(
+                builder: (context) {
+                  final filteredBlocks = widget.service.blocks
+                      .where((block) => block.name != '-')
+                      .toList();
+                  return GridView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 20,
+                    ),
+                    physics: const BouncingScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 280,
+                          mainAxisSpacing: 32,
+                          crossAxisSpacing: 32,
+                          childAspectRatio: 1,
+                        ),
+                    itemCount: filteredBlocks.length,
+                    itemBuilder: (context, index) {
+                      final block = filteredBlocks[index];
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(18),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ServiceFormPage(
+                                service: widget.service,
+                                block: block,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: const Color(0xFFFFE082)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.12),
+                                blurRadius: 14,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // BLOCK ICON
+                              Container(
+                                height: 72,
+                                width: 72,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFF4D6),
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                    color: const Color(0xFFFFE082),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    block.name[0].toUpperCase(),
+                                    style: const TextStyle(
+                                      fontSize: 34,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF92400E),
+                                    ),
+                                  ),
+                                ),
+                              ),
 
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(18),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ServiceFormPage(
-                            service: widget.service,
-                            block: block,
+                              const SizedBox(height: 18),
+
+                              // BLOCK NAME
+                              Text(
+                                block.name,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1F2937),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: const Color(0xFFFFE082),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.12),
-                            blurRadius: 14,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // BLOCK ICON
-                          Container(
-                            height: 72,
-                            width: 72,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFFF4D6),
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                color: const Color(0xFFFFE082),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                block.name[0].toUpperCase(),
-                                style: const TextStyle(
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF92400E),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          // BLOCK NAME
-                          Text(
-                            block.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF1F2937),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   );
                 },
               ),
@@ -233,9 +231,7 @@ class _BlockGridPageState extends State<BlockGridPage> {
               alignment: Alignment.center,
               decoration: const BoxDecoration(
                 color: Colors.white,
-                border: Border(
-                  top: BorderSide(color: Color(0xFFE5E7EB)),
-                ),
+                border: Border(top: BorderSide(color: Color(0xFFE5E7EB))),
               ),
               child: Text(
                 _language == 'ENG'

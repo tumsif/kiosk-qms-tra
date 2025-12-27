@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/service.dart';
-import '../services/services_api.dart';
-import '../service_button.dart';
+import 'package:kiosk_qms/models/service.dart';
+import 'package:kiosk_qms/services/services_api.dart';
+import 'service_button.dart';
 
 class ServicesGrid extends StatefulWidget {
   const ServicesGrid({super.key});
