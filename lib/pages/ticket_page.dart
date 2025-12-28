@@ -43,6 +43,9 @@ class _TicketPageState extends State<TicketPage> {
         'Please wait for your number',
         'to be called',
         '',
+        'Tafadhali subiri',
+        'namba yako kuitwa'
+        '',
         '',
         'Service: $serviceName',
         'Block: $serviceBlockName',
