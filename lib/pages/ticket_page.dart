@@ -146,7 +146,7 @@ class _TicketPageState extends State<TicketPage> {
               // CUSTOMER DETAILS
               if (widget.ticket['customer_name'] != null) _infoRow("Customer", widget.ticket['customer_name']),
               if (widget.ticket['customer_phone_number'] != null) _infoRow("Phone", widget.ticket['customer_phone_number']),
-              if (widget.ticket['customer_tin_number'] != null) _infoRow("customer_tin_number", widget.ticket['customer_tin_number']),
+              if (widget.ticket['customer_tin_number'] != null) _infoRow("TIN", widget.ticket['customer_tin_number']),
               _infoRow("Service", widget.ticket['service_name']),
               _infoRow(
                 "Block",

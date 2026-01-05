@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^12.0.1
   logger: ^2.6.2
 
+  image: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
