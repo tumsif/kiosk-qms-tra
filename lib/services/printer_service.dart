@@ -94,11 +94,16 @@ class PrinterService {
 
   /// Load logo
   Future<List<int>> _printLogo(Generator generator) async {
-    final ByteData data = await rootBundle.load('assets/images/tra_logo.png');
-    final Uint8List bytes = data.buffer.asUint8List();
-    final img.Image? image = img.decodeImage(bytes);
-    if (image == null) return [];
-    return generator.image(image, align: PosAlign.center);
+    try {
+      final ByteData data = await rootBundle.load('assets/images/tra_logo.jpg');
+      final Uint8List bytes = data.buffer.asUint8List();
+      final img.Image? image = img.decodeImage(bytes);
+      if (image == null) return [];
+      return generator.image(image, align: PosAlign.center);
+    } catch (e) {
+      log.e("Could not find asset file");
+      return [];
+    }
   }
 
   /// Print receipt
