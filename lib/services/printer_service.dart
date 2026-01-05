@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
@@ -99,7 +98,14 @@ class PrinterService {
       final Uint8List bytes = data.buffer.asUint8List();
       final img.Image? image = img.decodeImage(bytes);
       if (image == null) return [];
-      return generator.image(image, align: PosAlign.center);
+
+      // Resize the image to a supported dimensions
+      final img.Image resizedImage = img.copyResize(
+        image,
+        width: 150,
+        interpolation: img.Interpolation.cubic
+      );
+      return generator.image(resizedImage, align: PosAlign.center);
     } catch (e) {
       log.e("Could not find asset file");
       return [];
