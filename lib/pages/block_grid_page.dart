@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kiosk_qms/models/service.dart';
 import 'package:kiosk_qms/pages/service_form.dart';
+import 'package:kiosk_qms/pages/ticket_page.dart';
 import 'package:kiosk_qms/providers/language_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'package:kiosk_qms/services/queue_api.dart';
 
 class BlockGridPage extends StatefulWidget {
   final Service service;
@@ -163,16 +166,34 @@ class _BlockGridPageState extends State<BlockGridPage> {
                           final block = filteredBlocks[index];
                           return InkWell(
                             borderRadius: BorderRadius.circular(18),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => ServiceFormPage(
-                                    service: widget.service,
-                                    block: block,
+                            onTap: () async {
+                              if (widget.service.requireUserData) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ServiceFormPage(
+                                      service: widget.service,
+                                      block: block,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else {
+                                final ticket = await QueueApi.addToQueue(
+                                  customerName: null,
+                                  phoneNumber: null,
+                                  tinNumber: null,
+                                  serviceBlockId: block.id,
+                                );
+                                if (context.mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          TicketPage(ticket: ticket),
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(
