@@ -141,15 +141,13 @@ class PrinterService {
       // ===== REPLACED QUEUE PART (ONLY CHANGE) =====
       bytes += await _printLogo(generator);
 
-      bytes += generator.emptyLines(1);
-
       bytes += generator.text(
         'TRA - ARUSHA OFFICE',
         styles: PosStyles(
           align: PosAlign.center,
           bold: true,
-          height: PosTextSize.size2,
-          width: PosTextSize.size2,
+          height: PosTextSize.size1,
+          width: PosTextSize.size1,
         ),
       );
       // ===== END OF CHANGE =====
@@ -165,13 +163,12 @@ class PrinterService {
         styles: PosStyles(
           align: PosAlign.center,
           bold: true,
-          height: PosTextSize.size3,
-          width: PosTextSize.size3,
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
         ),
       );
 
       if (additionalLines != null) {
-        bytes += generator.emptyLines(1);
         for (var line in additionalLines) {
           bytes += generator.text(
             line,
@@ -190,7 +187,7 @@ class PrinterService {
         styles: PosStyles(align: PosAlign.center),
       );
 
-      bytes += generator.emptyLines(2);
+      bytes += generator.emptyLines(1);
       bytes += generator.cut();
 
       await PrintBluetoothThermal.writeBytes(bytes);
